@@ -21,6 +21,8 @@ function Dashboard() {
 
   const [selectAllN, setSelectAllN] = useState(false);
 
+  const [variableStrings, setVariableStrings] = useState([]);
+
   const handleTypeChange = (event) => {
     setSelectedType(event.target.value);
     setSelectedOptions({
@@ -117,13 +119,17 @@ function Dashboard() {
 
   const handleSubmission = () => {
     const variableString = generateVariableString();
-
-    // Store the variable string in local storage
-    localStorage.setItem('variableString', variableString);
-
+  
+    // Add the new value to the array of variable strings
+    setVariableStrings((prevVariableStrings) => [...prevVariableStrings, variableString]);
+  
+    // Store the updated array of variable strings in local storage
+    localStorage.setItem('variableStrings', JSON.stringify([...variableStrings, variableString]));
+  
     // You can also display a success message to the user or perform other actions as needed.
     alert('Variable string has been stored in local storage.');
   };
+  
 
   const showAllCheckbox = selectedOptions.SMF || selectedOptions.AMF || selectedOptions.PCF;
 
@@ -206,87 +212,87 @@ function Dashboard() {
                 name='N2'
                 checked={selectedOptions.N2}
                 onChange={handleCheckBoxChange}
-              />
-              N2
-            </label>
-            <label>
-              <input
-                type='checkbox'
-                name='N4'
-                checked={selectedOptions.N4}
-                onChange={handleCheckBoxChange}
-              />
-              N4
-            </label>
-            <label>
-              <input
-                type='checkbox'
-                name='N7'
-                checked={selectedOptions.N7}
-                onChange={handleCheckBoxChange}
-              />
-              N7
-            </label>
-            <label>
-              <input
-                type='checkbox'
-                name='N10'
-                checked={selectedOptions.N10}
-                onChange={handleCheckBoxChange}
-              />
-              N10
-            </label>
-            <label>
-              <input
-                type='checkbox'
-                name='N11'
-                checked={selectedOptions.N11}
-                onChange={handleCheckBoxChange}
-              />
-              N11
-            </label>
-            <label>
-              <input
-                type='checkbox'
-                name='N16'
-                checked={selectedOptions.N16}
-                onChange={handleCheckBoxChange}
-              />
-              N16
-            </label>
-            <label>
-              <input
-                type='checkbox'
-                name='N40'
-                checked={selectedOptions.N40}
-                onChange={handleCheckBoxChange}
-              />
-              N40
-            </label>
+                />
+                N2
+              </label>
+              <label>
+                <input
+                  type='checkbox'
+                  name='N4'
+                  checked={selectedOptions.N4}
+                  onChange={handleCheckBoxChange}
+                />
+                N4
+              </label>
+              <label>
+                <input
+                  type='checkbox'
+                  name='N7'
+                  checked={selectedOptions.N7}
+                  onChange={handleCheckBoxChange}
+                />
+                N7
+              </label>
+              <label>
+                <input
+                  type='checkbox'
+                  name='N10'
+                  checked={selectedOptions.N10}
+                  onChange={handleCheckBoxChange}
+                />
+                N10
+              </label>
+              <label>
+                <input
+                  type='checkbox'
+                  name='N11'
+                  checked={selectedOptions.N11}
+                  onChange={handleCheckBoxChange}
+                />
+                N11
+              </label>
+              <label>
+                <input
+                  type='checkbox'
+                  name='N16'
+                  checked={selectedOptions.N16}
+                  onChange={handleCheckBoxChange}
+                />
+                N16
+              </label>
+              <label>
+                <input
+                  type='checkbox'
+                  name='N40'
+                  checked={selectedOptions.N40}
+                  onChange={handleCheckBoxChange}
+                />
+                N40
+              </label>
+            </div>
+            {/* Conditionally render the "All" checkbox */}
+            {showAllCheckbox && (
+              <label>
+                <input
+                  type='checkbox'
+                  name='All'
+                  checked={selectAllN}
+                  onChange={handleSelectAllN}
+                />
+                All
+              </label>
+            )}
+            <div className='variable-string'>
+              Variable String: {generateVariableString()}
+            </div>
+  
+            {/* Add the submit button */}
+            <button onClick={handleSubmission}>Submit</button>
           </div>
-          {/* Conditionally render the "All" checkbox */}
-          {showAllCheckbox && (
-            <label>
-              <input
-                type='checkbox'
-                name='All'
-                checked={selectAllN}
-                onChange={handleSelectAllN}
-              />
-              All
-            </label>
-          )}
-          <div className='variable-string'>
-            Variable String: {generateVariableString()}
-          </div>
-
-          {/* Add the submit button */}
-          <button onClick={handleSubmission}>Submit</button>
-        </div>
-      )}
-    </div>
-  );
-}
-
-export default Dashboard;
-
+        )}
+      </div>
+    );
+  }
+  
+  export default Dashboard;
+  
