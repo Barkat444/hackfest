@@ -1,0 +1,75 @@
+/* Dashboard.css */
+
+.tbaas-container {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 400px;
+    background-color: #f5f5f5;
+  }
+  
+  .instruction {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  input[type='radio'],
+  input[type='checkbox'] {
+    margin-right: 5px;
+  }
+  
+  input[type='text'] {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    margin-right: 10px;
+    width: 100%;
+  }
+  
+  button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .horizontal-checkboxes {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+  }
+  
+  /* Hide the additional checkboxes by default */
+  .checkbox-group {
+    display: none;
+    margin-top: 10px;
+  }
+  
+  /* Show the additional checkboxes when SMF is selected */
+  .checkbox-group.show {
+    display: block;
+    margin-top: 10px;
+  }
+  
+  .checkbox-group.show label {
+    margin-right: 15px;
+  }
+  
+  /* Horizontal checkboxes for SMF, AMF, PCF */
+  .horizontal-checkbox-group {
+    display: flex;
+    margin-top: 10px;
+  }
+  
+  .horizontal-checkbox-group label {
+    margin-right: 15px;
+  }
+  
