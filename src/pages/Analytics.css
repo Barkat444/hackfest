@@ -1,0 +1,71 @@
+/* Base Styles */
+.analytics-container {
+    padding: 20px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 20px auto;
+    max-width: 800px; /* Adjust max-width as needed */
+    text-align: center;
+    font-family: Arial, sans-serif;
+  }
+  
+  .radio-buttons label {
+    display: inline-block;
+    margin-right: 20px;
+    font-size: 16px;
+  }
+  
+  .variable-strings {
+    margin-top: 20px;
+  }
+  
+  .variable-strings h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  /* Button Styles */
+  .provision-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 16px;
+    margin: 5px 0; /* Adjust margin to separate buttons vertically */
+    cursor: pointer;
+    font-size: 16px;
+    display: block; /* Display buttons as block elements to align them vertically */
+  }
+  
+  .buttons-container {
+    margin-top: 20px;
+  }
+  
+  /* Responsive Styles */
+  @media screen and (max-width: 600px) {
+    .analytics-container {
+      padding: 10px;
+    }
+  
+    .radio-buttons label {
+      margin-right: 10px;
+      font-size: 14px;
+    }
+  
+    .variable-strings h2 {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+  
+    .provision-button {
+      padding: 6px 12px; /* Adjust padding for smaller screens */
+      font-size: 14px;
+    }
+  }
+  
