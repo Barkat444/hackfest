@@ -1,95 +1,142 @@
 /* Dashboard.css */
 
 .tbaas-container {
-  margin: 20px;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  width: 400px;
-  background-color: #f5f5f5;
-}
-
-.instruction {
-  font-size: 16px;
-  margin-bottom: 10px;
-}
-
-label {
-  display: block;
-  margin-bottom: 10px;
-}
-
-.Making_nf_horizontal {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-input[type='radio'],
-input[type='checkbox'] {
-  margin-right: 5px;
-}
-
-input[type='text'] {
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 5px;
-  margin-right: 10px;
-  width: 100%;
-}
-
-button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 5px 10px;
-  cursor: pointer;
-}
-
-.horizontal-checkboxes {
-  display: flex;
-  flex-direction: column;
-  margin-top: 10px;
-}
-
-/* Hide the additional checkboxes by default */
-.checkbox-group {
-  display: none;
-  margin-top: 10px;
-}
-
-/* Show the additional checkboxes when SMF is selected */
-.checkbox-group.show {
-  display: block;
-  margin-top: 10px;
-}
-
-.checkbox-group.show label {
-  margin-right: 15px;
-}
-
-/* Horizontal checkboxes for SMF, AMF, PCF */
-.horizontal-checkbox-group {
-  display: flex;
-  margin-top: 10px;
-}
-
-.horizontal-checkbox-group label {
-  margin-right: 15px;
-}
-
-.checkbox-input-group {
-  display: flex;
-  align-items: center;
-  margin-bottom: 5px;
-}
-
-.checkbox-input-group input[type='text'] {
-  margin-right: 5px;
-}
-
-.variable-string {
-  margin-top: 10px;
-  font-weight: bold;
-}
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    width: 400px;
+    background-color: #f5f5f5;
+  }
+  
+  .instruction {
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  .Making_nf_horizontal {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  input[type='radio'],
+  input[type='checkbox'] {
+    margin-right: 5px;
+  }
+  
+  input[type='text'] {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-right: 10px;
+    width: 100%;
+  }
+  
+  button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  .horizontal-checkboxes {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+  }
+  
+  /* Hide the additional checkboxes by default */
+  .checkbox-group {
+    display: none;
+    margin-top: 20px;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #f0f0f0;
+  }
+  
+  /* Show the additional checkboxes when SMF is selected */
+  .checkbox-group.show {
+    display: block;
+  }
+  
+  .checkbox-group.show label {
+    margin-right: 15px;
+  }
+  
+  /* Horizontal checkboxes for SMF, AMF, PCF */
+  .horizontal-checkbox-group {
+    display: flex;
+    margin-top: 10px;
+  }
+  
+  .horizontal-checkbox-group label {
+    margin-right: 15px;
+  }
+  
+  .checkbox-input-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .checkbox-input-group input[type='text'] {
+    margin-right: 10px;
+  }
+  
+  .variable-string {
+    margin-top: 20px;
+    font-weight: bold;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #f0f0f0;
+  }
+  
+  /* Responsive Styles */
+  @media screen and (max-width: 600px) {
+    .tbaas-container {
+      width: 100%;
+    }
+  
+    .instruction {
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+  
+    input[type='text'] {
+      padding: 8px;
+      margin-right: 8px;
+    }
+  
+    button {
+      padding: 8px 16px;
+    }
+  
+    .horizontal-checkboxes {
+      margin-top: 15px;
+    }
+  
+    .checkbox-group {
+      padding: 8px;
+      margin-top: 15px;
+    }
+  
+    .variable-string {
+      margin-top: 15px;
+      padding: 8px;
+    }
+  }
+  
