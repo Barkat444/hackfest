@@ -86,11 +86,14 @@
 
 import React, { useState, useEffect } from 'react';
 import './Analytics.css';
+import beautify from 'js-beautify';
 
 function Analytics() {
   const [selectedType, setSelectedType] = useState('Sub Based Tracing');
   const [variableStrings, setVariableStrings] = useState([]);
   const [filteredStrings, setFilteredStrings] = useState([]);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedProvision, setSelectedProvision] = useState('');
 
   useEffect(() => {
     // Load variable strings from local storage on component mount
@@ -115,50 +118,112 @@ function Analytics() {
     }
   }, [selectedType, variableStrings]);
 
-  const handleStopProvisioning = (fileName) => {
-    // Open a new tab and fetch and display the data
-    fetchAndDisplayData(fileName);
+  const handleStopProvisioning = () => {
+    // Clear the data in local storage
+    localStorage.removeItem('variableStrings');
+    // Clear the variableStrings state
+    setVariableStrings([]);
   };
 
-  const fetchAndDisplayData = async (fileName) => {
-    try {
-      // Assuming your file is in the downloads folder, construct the file URL
-      const fileURL = `/path/to/downloads/${fileName}`;
-      
-      // Fetch the file's data
-      const response = await fetch(fileURL);
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
+  };
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch file');
-      }
+  const handleProceed = () => {
+    if (selectedFile) {
+      const fileReader = new FileReader();
+      fileReader.onload = (e) => {
+        try {
+          // Get the file content as text
+          const textContent = e.target.result;
 
-      // Read the file content as JSON
-      const jsonData = await response.json();
+          // Use js-beautify to format the text content as JSON
+          const formattedData = beautify(textContent, { indent_size: 2 });
 
-      // Open a new tab and display the JSON data
-      const newTab = window.open('', '_blank');
-      newTab.document.write('<pre>' + JSON.stringify(jsonData, null, 2) + '</pre>');
-    } catch (error) {
-      console.error('Error fetching or displaying data:', error);
+          // Create a new tab and display the formatted data
+          const newTab = window.open();
+          newTab.document.open();
+          newTab.document.write(`<pre>${formattedData}</pre>`);
+          newTab.document.close();
+        } catch (error) {
+          alert('Error processing the file.');
+          console.error(error); // Log the error to the console for debugging
+        }
+      };
+
+      // Read the content of the selected file as text
+      fileReader.readAsText(selectedFile);
+    } else {
+      alert('Please select a file first.');
     }
   };
 
   return (
     <div className="analytics-container">
-      {/* ... (your existing JSX) */}
+      <div className="radio-buttons">
+        <label>
+          <input
+            type="radio"
+            value="Sub Based Tracing"
+            checked={selectedType === 'Sub Based Tracing'}
+            onChange={() => setSelectedType('Sub Based Tracing')}
+          />
+          Sub Based Tracing
+        </label>
+        <label>
+          <input
+            type="radio"
+            value="NF Based Tracing"
+            checked={selectedType === 'NF Based Tracing'}
+            onChange={() => setSelectedType('NF Based Tracing')}
+          />
+          NF Based Tracing
+        </label>
+      </div>
+      <div className="buttons-container">
+        <button className="provision-button" onClick={handleStopProvisioning}>
+          Stop Provisioning
+        </button>
+      </div>
       <div className="list-of-provisions">
         <h2>List of Provisions:</h2>
-        <div className="provision-buttons">
-          {filteredStrings.map((str, index) => (
-            <button
-              className="provision-button"
-              key={index}
-              onClick={() => handleStopProvisioning(str)}
-            >
-              {str}
+        {filteredStrings.length === 0 ? (
+          <p>No Provisions Available</p>
+        ) : (
+          <select
+            value={selectedProvision}
+            onChange={(e) => setSelectedProvision(e.target.value)}
+            className="provision-dropdown"
+          >
+            <option value="">Select a Provision</option>
+            {filteredStrings.map((str, index) => (
+              <option value={str} key={index}>
+                {str}
+              </option>
+            ))}
+          </select>
+        )}
+      </div>
+
+      <div className="file-analytics">
+        <h2>File Analytics</h2>
+        <label htmlFor="file-input" className="file-input-label">
+          Choose File
+        </label>
+        <input
+          type="file"
+          id="file-input"
+          onChange={handleFileChange}
+          className="file-input"
+        />
+        {selectedFile && (
+          <div>
+            <p>Selected file is: {selectedFile.name}</p>
+            <button onClick={handleProceed} className="proceed-button">
+              Proceed
             </button>
-          ))}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );
