@@ -3,17 +3,18 @@
     padding: 20px;
     background-color: #f0f0f0;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 10px;
     margin: 20px auto;
-    max-width: 800px; /* Adjust max-width as needed */
+    max-width: 1200px;
     text-align: center;
     font-family: Arial, sans-serif;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   }
   
   .radio-buttons label {
     display: inline-block;
     margin-right: 20px;
-    font-size: 16px;
+    font-size: 18px;
   }
   
   .variable-strings {
@@ -21,7 +22,7 @@
   }
   
   .variable-strings h2 {
-    font-size: 18px;
+    font-size: 20px;
     margin-bottom: 10px;
   }
   
@@ -36,36 +37,98 @@
     color: #fff;
     border: none;
     border-radius: 5px;
-    padding: 8px 16px;
-    margin: 5px 0; /* Adjust margin to separate buttons vertically */
+    padding: 10px 20px;
+    margin: 10px 0;
     cursor: pointer;
-    font-size: 16px;
-    display: block; /* Display buttons as block elements to align them vertically */
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .provision-button:hover {
+    background-color: #0056b3;
   }
   
   .buttons-container {
     margin-top: 20px;
   }
   
+  /* Dropdown Styles */
+  .provision-dropdown {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 18px;
+  }
+  
+  /* File Input Styles */
+  .file-input {
+    display: none;
+  }
+  
+  .file-analytics {
+    margin-top: 20px;
+  }
+  
+  .file-analytics h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .file-analytics p {
+    margin-bottom: 10px;
+  }
+  
+  .file-analytics label {
+    display: inline-block;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .file-analytics label:hover {
+    background-color: #0056b3;
+  }
+  
   /* Responsive Styles */
   @media screen and (max-width: 600px) {
     .analytics-container {
       padding: 10px;
+      max-width: 100%;
     }
   
     .radio-buttons label {
       margin-right: 10px;
-      font-size: 14px;
+      font-size: 16px;
     }
   
     .variable-strings h2 {
-      font-size: 16px;
+      font-size: 18px;
       margin-bottom: 8px;
     }
   
     .provision-button {
-      padding: 6px 12px; /* Adjust padding for smaller screens */
-      font-size: 14px;
+      padding: 8px 16px;
+      font-size: 16px;
+    }
+  
+    .provision-dropdown {
+      font-size: 16px;
+    }
+  
+    .file-analytics h2 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+  
+    .file-analytics label {
+      padding: 8px 16px;
+      font-size: 16px;
     }
   }
   
