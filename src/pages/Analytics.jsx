@@ -103,16 +103,19 @@ function Analytics() {
 
   useEffect(() => {
     // Filter and update the list of variable strings based on the selected type
-    if (selectedType === 'Sub Based Tracing') {
+    if (selectedType === 'NF Based Tracing') {
       const filtered = variableStrings.filter((str) => {
         // Check if there are exactly 2 $ characters with any content in between
-        return (str.match(/\$/g) || []).length === 2;
+        // return (str.match(/\$/g) || []).length === 2;
+        return /^(SMF|AMF|PCF)/.test(str);
+
       });
       setFilteredStrings(filtered);
-    } else if (selectedType === 'NF Based Tracing') {
+    } else if (selectedType === 'Sub Based Tracing') {
       const filtered = variableStrings.filter((str) => {
         // Check if there is exactly 1 $ character
-        return (str.match(/\$/g) || []).length === 1;
+        // return (str.match(/\$/g) || []).length === 1;
+        return /^(?!SMF|AMF|PCF)/.test(str);
       });
       setFilteredStrings(filtered);
     }
@@ -180,12 +183,9 @@ function Analytics() {
           NF Based Tracing
         </label>
       </div>
-      <div className="buttons-container">
-        <button className="provision-button" onClick={handleStopProvisioning}>
-          Stop Provisioning
-        </button>
-      </div>
+      
       <div className="list-of-provisions">
+        <br></br>
         <h2>List of Provisions:</h2>
         {filteredStrings.length === 0 ? (
           <p>No Provisions Available</p>
@@ -224,6 +224,11 @@ function Analytics() {
             </button>
           </div>
         )}
+      </div>
+      <div className="buttons-container">
+        <button className="provision-button" onClick={handleStopProvisioning}>
+          Stop Provisioning
+        </button>
       </div>
     </div>
   );
