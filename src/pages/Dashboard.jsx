@@ -975,8 +975,6 @@
 
 
 
-// 11-09-23 - Added 3 more options
-
 import React, { useState } from 'react';
 import './Dashboard.css';
 
@@ -988,6 +986,7 @@ function Dashboard() {
     SMF: false,
     AMF: false,
     PCF: false,
+    CHF: false,
     N1: false,
     N2: false,
     N4: false,
@@ -1007,6 +1006,11 @@ function Dashboard() {
 
   const [enteredNumber, setEnteredNumber] = useState('');
 
+  // if(enteredNumber === ""){
+  // enteredNumber = 30
+  // }
+
+
   // State to store user-entered numbers for N checkboxes
   const [userEnteredNumbers, setUserEnteredNumbers] = useState({
     N1: '',
@@ -1019,14 +1023,13 @@ function Dashboard() {
     N40: '',
   });
 
-  const [selectedDropdownOption, setSelectedDropdownOption] = useState('');
-
   const handleTypeChange = (event) => {
     setSelectedType(event.target.value);
     setSelectedOptions({
       SMF: false,
       AMF: false,
       PCF: false,
+      CHF: false,
       N1: false,
       N2: false,
       N4: false,
@@ -1035,7 +1038,7 @@ function Dashboard() {
       N11: false,
       N16: false,
       N40: false,
-      valDuration: false, 
+      valDuration: false,
       errCount: false,
       trDepth: false,
     });
@@ -1051,8 +1054,11 @@ function Dashboard() {
   };
 
   const handleProceedClick = () => {
-    if (imsiInput.trim() !== '') {
+    if (imsiInput.trim() !== '' && (imsiInput.startsWith("imsi-") || imsiInput.startsWith("IMSI-"))) {
       setProceedClicked(true);
+    }
+    else{
+      alert("Enter valid SUPI!")
     }
   };
 
@@ -1064,16 +1070,17 @@ function Dashboard() {
     } else if (type === 'number') {
       // Handle the Error Occurrence Count input
       setSelectedOptions({ ...selectedOptions, [name]: checked ? parseInt(value, 10) : 0 });
-    } else if (type === 'select-one') {
-      // Handle the Trace Depth dropdown
-      setSelectedOptions({ ...selectedOptions, [name]: value });
+    } else if (name === 'trDepth') {
+      // Handle the "trDepth" checkbox
+      setSelectedOptions({ ...selectedOptions, [name]: checked });
+      // setSelectedTrDepth(checked ? 'Min' : ''); // Set the initial value when checked or clear when unchecked
     }
   };
 
   const handleSelectAllN = () => {
     const newSelectedOptions = { ...selectedOptions };
     for (const key in newSelectedOptions) {
-      if (['N', 'v', 'e', 't'].some(prefix => key.startsWith(prefix))) {
+      if (['N'].some(prefix => key.startsWith(prefix))) {
         newSelectedOptions[key] = !selectAllN;
       }
     }
@@ -1086,21 +1093,16 @@ function Dashboard() {
     setEnteredNumber(value); // Update the entered number state
   };
 
-
-  
-  const handleDropdownChange = (event) => {
-    const { value } = event.target;
-    setSelectedDropdownOption(value);
-  };
+  const [selectedTrDepth, setSelectedTrDepth] = useState(''); // New state for selected trDepth option
 
   const appendUserEnteredNumber = (checkboxName) => {
     const num = enteredNumber.trim();
-    if (num !== '' && (selectedOptions[checkboxName] || selectedDropdownOption !== '')) {
+    if (num !== '' && (selectedOptions[checkboxName] || selectedTrDepth !== '')) {
       const existingValue = userEnteredNumbers[checkboxName] || '';
-      const newValue = `${existingValue}.${num}${selectedDropdownOption ? ` - ${selectedDropdownOption}` : ''}`;
+      const newValue = `${existingValue}.${num}${selectedTrDepth ? ` ` : ''}`;
       setUserEnteredNumbers({ ...userEnteredNumbers, [checkboxName]: newValue });
       setEnteredNumber('');
-      setSelectedDropdownOption('');
+      // setSelectedTrDepth('');
     }
   };
 
@@ -1110,6 +1112,7 @@ function Dashboard() {
     if (selectedOptions.SMF) selectedTypes.push('SMF');
     if (selectedOptions.AMF) selectedTypes.push('AMF');
     if (selectedOptions.PCF) selectedTypes.push('PCF');
+    if (selectedOptions.CHF) selectedTypes.push('CHF');
 
     let variableString = '';
 
@@ -1160,20 +1163,10 @@ function Dashboard() {
       }
     }
 
-    // // Append Validity Duration
-    // if (selectedOptions.valDuration) {
-    //   variableString += `${selectedOptions.valDuration}`;
-    // }
-
-    // // Append Error Occurrence Count
-    // if (selectedOptions.errCount) {
-    //   variableString += `$errCount.${selectedOptions.errCount}`;
-    // }
-
-    // // Append Trace Depth
-    // if (selectedOptions.trDepth) {
-    //   variableString += `$trDepth.${selectedOptions.trDepth}`;
-    // }
+    // Append Trace Depth
+    if (selectedOptions.trDepth && selectedTrDepth !== '') {
+      variableString += `$trDepth.${selectedTrDepth}`;
+    }
 
     return variableString;
   };
@@ -1207,7 +1200,7 @@ function Dashboard() {
     alert('Variable string has been stored in local storage.');
   };
 
-  const showAllCheckbox = selectedOptions.SMF || selectedOptions.AMF || selectedOptions.PCF;
+  const showAllCheckbox = selectedOptions.SMF || selectedOptions.AMF || selectedOptions.PCF || selectedOptions.CHF;
 
   return (
     <div className='tbaas-container'>
@@ -1229,14 +1222,14 @@ function Dashboard() {
             checked={selectedType === 'NF Bases Tracing'}
             onChange={handleTypeChange}
           />
-          NF Bases Tracing
+          NF Based Tracing
         </label>
       </div>
       {selectedType === 'Sub Based Tracing' && (
         <div>
           <input
             type='text'
-            placeholder='Enter IMSI'
+            placeholder='Enter IMSI (imsi-123456789012346)'
             value={imsiInput}
             onChange={handleImsiInputChange}
           />
@@ -1273,6 +1266,15 @@ function Dashboard() {
               />
               PCF
             </label>
+            <label>
+              <input
+                type='checkbox'
+                name='CHF'
+                checked={selectedOptions.CHF}
+                onChange={handleCheckBoxChange}
+              />
+              CHF
+            </label>
           </div>
           <div className={`checkbox-group ${selectedOptions.SMF ? 'show' : ''}`}>
             {Object.keys(selectedOptions).map((key) => {
@@ -1288,7 +1290,7 @@ function Dashboard() {
                       />
                       {key}
                     </label>
-                    {selectedOptions[key] && (
+                    {selectedOptions[key] && selectedType === 'NF Bases Tracing' && (
                       <div>
                         <input
                           type='text'
@@ -1301,7 +1303,24 @@ function Dashboard() {
                     )}
                   </div>
                 );
-              } else if (key === 'valDuration') {
+              } 
+              return null;
+            })}
+
+            {showAllCheckbox && (
+              <label>
+                <input
+                  type='checkbox'
+                  name='All'
+                  checked={selectAllN}
+                  onChange={handleSelectAllN}
+                />
+                All
+              </label>
+            )}
+
+            {Object.keys(selectedOptions).map((key) => {
+              if (key === 'valDuration') {
                 return (
                   <div key={key} className='checkbox-input-group'>
                     <label>
@@ -1311,13 +1330,13 @@ function Dashboard() {
                         checked={selectedOptions[key]}
                         onChange={handleCheckBoxChange}
                       />
-                      Validity Duration
+                      Trace Expiry Duration
                     </label>
                     {selectedOptions[key] && (
                       <div>
                         <input
                           type='text'
-                          placeholder='Enter'
+                          placeholder='validity duration for provisioning in sec'
                           onChange={(event) => handleUserEnteredNumber(event, key)}
                           value={enteredNumber}
                         />
@@ -1326,7 +1345,7 @@ function Dashboard() {
                     )}
                   </div>
                 );
-              } else if (key === 'errCount') {
+              } else if (key === 'errCount' && selectedType === 'NF Bases Tracing') {
                 return (
                   <div key={key} className='checkbox-input-group'>
                     <label>
@@ -1342,7 +1361,7 @@ function Dashboard() {
                       <div>
                         <input
                           type='text'
-                          placeholder='Enter'
+                          placeholder='Error repeat count (Ex. 3)'
                           onChange={(event) => handleUserEnteredNumber(event, key)}
                           value={enteredNumber}
                         />
@@ -1351,47 +1370,117 @@ function Dashboard() {
                     )}
                   </div>
                 );
-              } else if (key === 'trDepth') {
+              } else if (key === 'trDepth' && selectedType === 'NF Bases Tracing') {
                 return (
-                  <div key={key} className='checkbox-input-group'>
-                    <label>
-                      <input
-                        type='checkbox'
-                        name={key}
-                        checked={selectedOptions[key]}
-                        onChange={handleCheckBoxChange}
-                      />
-                      Trace Depth
-                    </label>
-                    {selectedOptions[key] && (
-                      <div>
-                        <select onChange={(event) => setSelectedDropdownOption(event.target.value)} value={selectedDropdownOption}>
-                          <option value=''>Select an option</option>
-                          <option value='Min'>Min</option>
-                          <option value='Medium'>Medium</option>
-                          <option value='Max'>Max</option>
-                          <option value='MaxPlusN-1'>MaxPlusN-1</option>
-                        </select>
-                        <button onClick={() => appendUserEnteredNumber(key)}>Enter</button>
-                      </div>
-                    )}
-                  </div>
+                  <div key="trDepth" className='checkbox-input-group'>
+                  <label>
+                    <input
+                      type='checkbox'
+                      name='trDepth'
+                      checked={selectedOptions.trDepth}
+                      onChange={handleCheckBoxChange}
+                    />
+                    Trace Depth
+                  </label>
+                  {selectedOptions.trDepth && (
+                    <div>
+                      <label>
+                        <input
+                          type="radio"
+                          name="trDepthOption"
+                          value="Min"
+                          checked={selectedTrDepth === 'Min'}
+                          onChange={() => setSelectedTrDepth('Min')}
+                        />
+                        Min
+                      </label>
+                      <label>
+                        <input
+                          type="radio"
+                          name="trDepthOption"
+                          value="Medium"
+                          checked={selectedTrDepth === 'Medium'}
+                          onChange={() => setSelectedTrDepth('Medium')}
+                        />
+                        Medium
+                      </label>
+                      <label>
+                        <input
+                          type="radio"
+                          name="trDepthOption"
+                          value="Max"
+                          checked={selectedTrDepth === 'Max'}
+                          onChange={() => setSelectedTrDepth('Max')}
+                        />
+                        Max
+                      </label>
+                      <label>
+                        <input
+                          type="radio"
+                          name="trDepthOption"
+                          value="MaxPlusN-1"
+                          checked={selectedTrDepth === 'MaxPlusN-1'}
+                          onChange={() => setSelectedTrDepth('MaxPlusN-1')}
+                        />
+                        MaxPlusN-1
+                      </label>
+                    </div>
+                  )}
+                </div>
+                );
+              } else if (key === 'trDepth' && selectedType === 'Sub Based Tracing') {
+                return (
+                  <div key="trDepth" className='checkbox-input-group'>
+                  <label>
+                    <input
+                      type='checkbox'
+                      name='trDepth'
+                      checked={selectedOptions.trDepth}
+                      onChange={handleCheckBoxChange}
+                    />
+                    Trace Depth
+                  </label>
+                  {selectedOptions.trDepth && (
+                    <div>
+                      <label>
+                        <input
+                          type="radio"
+                          name="trDepthOption"
+                          value="Min"
+                          checked={selectedTrDepth === 'Min'}
+                          onChange={() => setSelectedTrDepth('Min')}
+                        />
+                        Min
+                      </label>
+                      <label>
+                        <input
+                          type="radio"
+                          name="trDepthOption"
+                          value="Medium"
+                          checked={selectedTrDepth === 'Medium'}
+                          onChange={() => setSelectedTrDepth('Medium')}
+                        />
+                        Medium
+                      </label>
+                      <label>
+                        <input
+                          type="radio"
+                          name="trDepthOption"
+                          value="Max"
+                          checked={selectedTrDepth === 'Max'}
+                          onChange={() => setSelectedTrDepth('Max')}
+                        />
+                        Max
+                      </label>
+                    </div>
+                  )}
+                </div>
                 );
               }
               return null;
             })}
-             {/* Conditionally render the "All" checkbox */}
-             {showAllCheckbox && (
-                <label>
-                  <input
-                    type='checkbox'
-                    name='All'
-                    checked={selectAllN}
-                    onChange={handleSelectAllN}
-                  />
-                  All
-                </label>
-              )}
+
+            
           </div>
           <div className='variable-string'>
             Variable String: {generateVariableString()}
@@ -1404,5 +1493,3 @@ function Dashboard() {
 }
 
 export default Dashboard;
-
-
